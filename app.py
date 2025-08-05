@@ -1,21 +1,99 @@
-from dash import Dash, html, callback
+from dash import Dash, html, callback, dcc, Input, Output, ctx, no_update
 
 fondo_grande = "assets/fondo_grande.mp4"
 fondo_pequeno = "assets/fondo_pequeno.mp4"
 avatar = "assets/avatar.jpg"
 
-nombre_usuario = "@cristian arboleda"
+nombre_usuario = "cristian arboleda"
 
 links=[
-        {"tipo": "texto", "texto": "github", "url": "", "imagen": "assets/iconos/github.png"},
+    {"tipo": "texto", "texto": "github", "url": "https://github.com/Cristian-Arboleda", "imagen": "assets/iconos/github.png"},
+    {"tipo": "texto", "texto": "web_page", "url": "", "imagen": "assets/iconos/pagina_web.png"},
+    {"tipo": "texto", "texto": "linkedin", "url": "", "imagen": "assets/iconos/linkedin.png"},
     {"tipo": "texto", "texto": "youtube", "url": "", "imagen": "assets/iconos/youtube.png"},
     {"tipo": "texto", "texto": "facebook", "url": "", "imagen": "assets/iconos/facebook.png"},
     {"tipo": "texto", "texto": "tiktok", "url": "", "imagen": "assets/iconos/tiktok.png"},
     {"tipo": "texto", "texto": "instagram", "url": "", "imagen": "assets/iconos/instagram.png"},
-    {"tipo": "texto", "texto": "pagina_web", "url": "", "imagen": "assets/iconos/pagina_web.png"},
 ]
 
-app = Dash(__name__)
+
+# links ----------------------------------------------------
+links_html = html.Div(
+    id="contenedor_links",
+    children=[
+        *[
+            html.A(
+                className='link',
+                href=link['url'],
+                target='_blank',
+                children=[
+                    html.Img(
+                        src=link['imagen'],
+                        className='imagen_link',
+                    ),
+                    html.P(
+                        children=link['texto'].title().replace('_', ' '),
+                        className='texto_link'
+                    ),
+                    html.P('⚡'),
+                ]
+            )
+            for link in links
+        ],
+        html.Hr(),
+    ]
+),
+
+# Video destacado -------------------------------------------------------
+videos_destacados_html = html.Div(
+    id='contenedor_video_destacado',
+    children=[
+        html.Iframe(
+            src='https://www.youtube.com/embed/--pxv_RCjOg?si=OsuLfLq73Ide8dAh',
+            id='video_destacado',
+        ),
+        html.Hr()
+    ]
+),
+
+about_me = html.Div(
+    children=[
+        html.P('hi, is me.')
+    ]
+)
+
+# ----------------------------------------------------------------
+contenido_tabs = {
+    'links': links_html,
+    'Featured': videos_destacados_html,
+    'about_me': about_me
+}
+
+# enviar_mensaje ----------------------------------------------------
+enviar_mensaje = html.Div(
+    id='contenedor_enviar_mensaje',
+    children=[
+        html.P(
+            children='Send me a message',
+            id='enviar_mensaje_titulo',
+        ),
+        dcc.Input(
+            id='email',
+            placeholder='Write your email',
+        ),
+        dcc.Textarea(
+            id='mensaje',
+            placeholder='write your message',
+        ),
+        html.Button(
+            children='Send',
+            id = 'send',
+        )
+    ]
+)
+
+app = Dash(__name__,)
+app.title = nombre_usuario
 
 app.layout = html.Div(
     id="all",
@@ -31,57 +109,35 @@ app.layout = html.Div(
         html.Div(
             id='main',
             children=[
-                html.Video(
-                    src=fondo_pequeno,
-                    id='fondo_pequeno',
-                    autoPlay=True,
-                    loop=True,
-                    controls=False,
-                    muted=True,
-                ) if None else None,
-                
                 # Contenedor principal -------------------------------------------------------------------------------------
                 html.Div(
                     id='contenedor',
                     children=[
                         # foto de perfil
-                        html.Img(
-                            src=avatar,
-                            id="avatar",
-                        ),
-                        html.P(
-                            children=nombre_usuario.title(),
-                            id='nombre_usuario',
-                        ),
-                        html.Hr(),
-                        # links ----------------------------------------------------
                         html.Div(
-                            id="contenedor_links",
+                            id='contenedor_perfil',
                             children=[
-                                html.A(
-                                    className='link',
-                                    href=link['url'],
-                                    
-                                    children=[
-                                        html.Img(
-                                            src=link['imagen'],
-                                            className='imagen_link',
-                                        ),
-                                        html.P(
-                                            children=link['texto'].title().replace('_', ' '),
-                                            className='texto_link'
-                                        ),
-                                        html.P('⚡'),
-                                    ]
-                                )
-                                for link in links
+                                html.Img(
+                                src=avatar,
+                                id="avatar",
+                                ),
+                                html.P(
+                                    children=nombre_usuario.title(),
+                                    id='nombre_usuario',
+                                ),
+                                html.Hr(),
                             ]
                         ),
-                        # Video destacado -------------------------------------------------------
-                        html.Iframe(
-                            src='https://www.youtube.com/embed/--pxv_RCjOg?si=OsuLfLq73Ide8dAh',
-                            id='video_destacado',
-                        )
+                        # contenedor de tabs
+                        html.Div(
+                            id='contenedor_btn_tabs',
+                            children=[
+                                html.Button(children=tab.replace('_', ' ').title(), id=f'btn_{tab}', className='btn_tab')
+                                for tab in contenido_tabs
+                            ]
+                        ),
+                        html.Div(id='contenido', style={'width': '100%'}),
+                        enviar_mensaje,
                     ]
                 ),
             ]
@@ -89,4 +145,40 @@ app.layout = html.Div(
     ]
 )
 
-app.run_server(port=8050, debug=True)
+@callback(
+    [
+        Output(component_id=f'btn_{tab}', component_property='className')
+        for tab in contenido_tabs
+    ],
+    Output(component_id='contenido', component_property='children'),
+    [
+        Input(component_id=f'btn_{tab}', component_property='n_clicks')
+        for tab in contenido_tabs
+    ]
+)
+def retornado_de_contenido(*args):
+    """
+    Esta funcion retorno un contenido en base al boton presionado
+    """
+    clase_seleccionada = 'btn_tab btn_tab_seleccionado'
+    clase_normal = 'btn_tab'
+    
+    # btn seleccionado
+    triggered = ctx.triggered_id
+    
+    if not triggered:
+        # contenido seleccionado que va a parecer al entrar en la pagina
+        resultado = [clase_normal if tab != 'links' else clase_seleccionada for tab in contenido_tabs]
+        # contenido que va a aparecer al entrar en la pagina
+        resultado.append(contenido_tabs['links'])
+        return resultado
+    
+    # Contenido seleccionado por el usuario
+    triggered = triggered.replace('btn_', '')
+    
+    resultado = [clase_seleccionada if tab == triggered else clase_normal for tab in contenido_tabs]
+    resultado.append(contenido_tabs[triggered])
+    return resultado
+
+
+app.run(port=8050, debug=True)
