@@ -203,4 +203,5 @@ def enviar_mensajed(send, email):
     else:
         return {'display': 'none'}
 
-app.run(port=8050, debug=True)
+if __name__ == '__main__':
+    app.run(port=8050, debug=True)
