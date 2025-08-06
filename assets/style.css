@@ -5,7 +5,7 @@
     font-family: verdana;
 }
 body{
-    background: rgb(20, 16, 33)
+    background: rgb(31, 31, 31)
 }
 
 hr{
@@ -180,7 +180,11 @@ hr{
     border: 1px solid rgb(113, 113, 238);
     background: rgba(4, 4, 38, 0.902)
 }
-
+#wrong_email{
+    color: red;
+    font-size: 20px;
+    display: none;
+}
 #mensaje{
     width: 100%;
     background: rgba(4, 4, 38, 0.606);

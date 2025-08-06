@@ -1,4 +1,5 @@
-from dash import Dash, html, callback, dcc, Input, Output, ctx, no_update
+from dash import Dash, html, callback, dcc, Input, Output, ctx, no_update, State
+import re
 
 fondo_grande = "assets/fondo_grande.mp4"
 fondo_pequeno = "assets/fondo_pequeno.mp4"
@@ -81,9 +82,13 @@ enviar_mensaje = html.Div(
             id='email',
             placeholder='Write your email',
         ),
+        html.P(
+            children='Wrong email',
+            id='wrong_email',
+        ),
         dcc.Textarea(
             id='mensaje',
-            placeholder='write your message',
+            placeholder='Write your message',
         ),
         html.Button(
             children='Send',
@@ -93,6 +98,8 @@ enviar_mensaje = html.Div(
 )
 
 app = Dash(__name__,)
+server = app.server
+
 app.title = nombre_usuario
 
 app.layout = html.Div(
@@ -180,5 +187,20 @@ def retornado_de_contenido(*args):
     resultado.append(contenido_tabs[triggered])
     return resultado
 
+
+@callback(
+    Output(component_id='wrong_email', component_property='style'),
+    Input(component_id='send', component_property='n_clicks'),
+    State(component_id='email', component_property='value'),
+)
+def enviar_mensajed(send, email):
+    print(email)
+    if not send:
+        return no_update
+    
+    if not email:
+        return {'display': 'block'}
+    else:
+        return {'display': 'none'}
 
 app.run(port=8050, debug=True)
