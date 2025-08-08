@@ -59,14 +59,13 @@ videos_destacados_html = html.Div(
 ),
 
 about_me = html.Div(
+    id='contenedor_about_me',
     children=[
-        dcc.Markdown(children=
+        html.P(children=
             """
-            ### Hola, gracias por estar aquí, me llamo cristian,
-            soy un entusiasta del conocimiento autodidacta, me gusta ir hasta el final de las cosas que me apasionan.
-            Aun asi poseo conocimientos académicos en estadística, programación e inteligencia artificial, 
-            esto gracias al hecho de haber estudiado en la universidad del valle.
-            Además, tengo cursos extras que refuerzan mis conocimientos anteriores.
+            Hello, thank you for being here. My name is Cristian. I'm a self-taught enthusiast and enjoy delving deeply into my passions.
+            I have an academic background in statistics, programming, and artificial intelligence (Universidad del Valle), and I complement that foundation with additional courses that keep my skills up-to-date. 
+            I consider myself responsible, punctual, and highly committed to the projects I work on. I'm results-oriented, detail-oriented, and eager to learn and apply new tools. I seek opportunities to contribute rigorous analysis, data-driven solutions, and well-structured code to challenging projects.
             """,
             id='about_me',
         ),
