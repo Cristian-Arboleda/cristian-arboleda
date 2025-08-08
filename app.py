@@ -47,7 +47,7 @@ links_html = html.Div(
 
 # Video destacado -------------------------------------------------------
 videos_destacados_html = html.Div(
-    id='contenedor_video_destacado',
+    id='contenedor_featured',
     children=[
         html.Iframe(
             src='https://www.youtube.com/embed/--pxv_RCjOg?si=OsuLfLq73Ide8dAh',
@@ -73,7 +73,7 @@ about_me = html.Div(
 # ----------------------------------------------------------------
 contenido_tabs = {
     'links': links_html,
-    'Featured': videos_destacados_html,
+    'featured': videos_destacados_html,
     'about_me': about_me
 }
 
@@ -172,6 +172,10 @@ app.layout = html.Div(
         Output(component_id=f'btn_{tab}', component_property='className')
         for tab in contenido_tabs
     ],
+    [
+        Output(component_id=f'contenedor_{tab}', component_property='style')
+        for tab in contenido_tabs
+    ],
     *[
         Input(component_id=f'btn_{tab}', component_property='n_clicks')
         for tab in contenido_tabs
@@ -180,14 +184,23 @@ app.layout = html.Div(
 def menu_seleccion(*args):
     boton_seleccionado_clase = 'btn_tab btn_tab_seleccionado'
     boton_no_seleccionado_clase = 'btn_tab'
-    # Si no se ha seleccionado un boton del menu
     
+    # Al iniciar la pagina
     boton_seleccionado = ctx.triggered_id
+    print(boton_seleccionado)
     if not boton_seleccionado:
-        resultado = [boton_seleccionado_clase if tab == list(contenido_tabs)[1] else boton_no_seleccionado_clase for tab in contenido_tabs]
+        resultado_clases_menu = [boton_seleccionado_clase if tab == list(contenido_tabs)[0] else boton_no_seleccionado_clase for tab in contenido_tabs]
+        resultado_estilos_contenedores_tab = [{'display': 'flex'} if tab == list(contenido_tabs)[0] else {'display': 'none'} for tab in contenido_tabs]
+        resultado = resultado_clases_menu + resultado_estilos_contenedores_tab
         print(resultado)
         return resultado
     
+    boton_seleccionado = boton_seleccionado.replace('btn_', '')
+    resultado_clases_menu = [boton_seleccionado_clase if boton_seleccionado == tab else boton_no_seleccionado_clase for tab in contenido_tabs]
+    resultado_estilos_contenedores_tab = [{"display": "flex"} if tab == boton_seleccionado else {"display": "none"} for tab in contenido_tabs]
+    resultado = resultado_clases_menu + resultado_estilos_contenedores_tab
+    print(resultado)
+    return resultado
 
 
 
