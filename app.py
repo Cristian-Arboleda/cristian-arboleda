@@ -42,9 +42,8 @@ links_html = html.Div(
             )
             for link in links
         ],
-        html.Hr(),
     ]
-),
+)
 
 # Video destacado -------------------------------------------------------
 videos_destacados_html = html.Div(
@@ -54,9 +53,8 @@ videos_destacados_html = html.Div(
             src='https://www.youtube.com/embed/--pxv_RCjOg?si=OsuLfLq73Ide8dAh',
             id='video_destacado',
         ),
-        html.Hr()
     ]
-),
+)
 
 about_me = html.Div(
     id='contenedor_about_me',
@@ -156,7 +154,10 @@ app.layout = html.Div(
                                 for tab in contenido_tabs
                             ]
                         ),
-                        html.Div(id='contenido', style={'width': '100%'}),
+                        *[
+                            contenido_tabs[tab] for tab in contenido_tabs
+                        ],
+                        html.Hr(),
                         enviar_mensaje,
                         html.P(id='mensaje_enviado')
                     ]
@@ -167,39 +168,28 @@ app.layout = html.Div(
 )
 
 @callback(
-    [
+    *[
         Output(component_id=f'btn_{tab}', component_property='className')
         for tab in contenido_tabs
     ],
-    Output(component_id='contenido', component_property='children'),
-    [
+    *[
         Input(component_id=f'btn_{tab}', component_property='n_clicks')
         for tab in contenido_tabs
-    ]
+    ],
 )
-def retornado_de_contenido(*args):
-    """
-    Esta funcion retorno un contenido en base al boton presionado
-    """
-    clase_seleccionada = 'btn_tab btn_tab_seleccionado'
-    clase_normal = 'btn_tab'
+def menu_seleccion(*args):
+    boton_seleccionado_clase = 'btn_tab btn_tab_seleccionado'
+    boton_no_seleccionado_clase = 'btn_tab'
+    # Si no se ha seleccionado un boton del menu
     
-    # btn seleccionado
-    triggered = ctx.triggered_id
-    
-    if not triggered:
-        # contenido seleccionado que va a parecer al entrar en la pagina
-        resultado = [clase_normal if tab != 'links' else clase_seleccionada for tab in contenido_tabs]
-        # contenido que va a aparecer al entrar en la pagina
-        resultado.append(contenido_tabs['links'])
+    boton_seleccionado = ctx.triggered_id
+    if not boton_seleccionado:
+        resultado = [boton_seleccionado_clase if tab == list(contenido_tabs)[1] else boton_no_seleccionado_clase for tab in contenido_tabs]
+        print(resultado)
         return resultado
     
-    # Contenido seleccionado por el usuario
-    triggered = triggered.replace('btn_', '')
-    
-    resultado = [clase_seleccionada if tab == triggered else clase_normal for tab in contenido_tabs]
-    resultado.append(contenido_tabs[triggered])
-    return resultado
+
+
 
 def verificar_correo(email):
     regular = r'^(?!\.)(?!.*\.\.)[a-zA-Z0-9._%+-]+(?<!\.)@[a-zA-Z0-9-]{1,63}(\.[a-zA-Z0-9]{2,})+$'
