@@ -1,4 +1,5 @@
 from dash import Dash, html, callback, dcc, Input, Output, ctx, no_update, State
+from dash.exceptions import PreventUpdate
 import re
 
 fondo_grande = "assets/fondo_grande.mp4"
@@ -59,7 +60,16 @@ videos_destacados_html = html.Div(
 
 about_me = html.Div(
     children=[
-        html.P('hi, is me.')
+        dcc.Markdown(children=
+            """
+            ### Hola, gracias por estar aquí, me llamo cristian,
+            soy un entusiasta del conocimiento autodidacta, me gusta ir hasta el final de las cosas que me apasionan.
+            Aun asi poseo conocimientos académicos en estadística, programación e inteligencia artificial, 
+            esto gracias al hecho de haber estudiado en la universidad del valle.
+            Además, tengo cursos extras que refuerzan mis conocimientos anteriores.
+            """,
+            id='about_me',
+        ),
     ]
 )
 
@@ -84,16 +94,20 @@ enviar_mensaje = html.Div(
         ),
         html.P(
             children='Wrong email',
-            id='wrong_email',
+            id='wrong_email_warning',
         ),
         dcc.Textarea(
             id='mensaje',
             placeholder='Write your message',
         ),
+        html.P(
+            children='Your message is empty :(',
+            id='empty_message',
+        ),
         html.Button(
             children='Send',
             id = 'send',
-        )
+        ),
     ]
 )
 
@@ -145,6 +159,7 @@ app.layout = html.Div(
                         ),
                         html.Div(id='contenido', style={'width': '100%'}),
                         enviar_mensaje,
+                        html.P(id='mensaje_enviado')
                     ]
                 ),
             ]
@@ -187,21 +202,42 @@ def retornado_de_contenido(*args):
     resultado.append(contenido_tabs[triggered])
     return resultado
 
+def verificar_correo(email):
+    regular = r'^(?!\.)(?!.*\.\.)[a-zA-Z0-9._%+-]+(?<!\.)@[a-zA-Z0-9-]{1,63}(\.[a-zA-Z0-9]{2,})+$'
+    email_correcto = re.fullmatch(regular, email) is not None
+    return email_correcto
 
 @callback(
-    Output(component_id='wrong_email', component_property='style'),
+    Output(component_id='wrong_email_warning', component_property='style'),
+    Output(component_id='email', component_property='className'),
+    Output(component_id='empty_message', component_property='style'),
+    Output(component_id='mensaje', component_property='className'),
+    Output(component_id='contenedor_enviar_mensaje', component_property='style'),
+    Output(component_id='mensaje_enviado', component_property='children'),
     Input(component_id='send', component_property='n_clicks'),
     State(component_id='email', component_property='value'),
+    State(component_id='mensaje', component_property='value'),
 )
-def enviar_mensajed(send, email):
-    print(email)
-    if not send:
-        return no_update
+def verificar_mensaje(send, email, mensaje):
+    if not send or not email:
+        raise PreventUpdate
     
-    if not email:
-        return {'display': 'block'}
-    else:
-        return {'display': 'none'}
+    # Verificar que el correo ingresado es correcto
+    email_correcto = verificar_correo(email)
+    print(email_correcto)
+    
+    # Correo incorrecto
+    if not email_correcto:
+        return {'display': 'block'}, 'wrong_email', no_update, no_update, no_update, no_update
+    
+    # Mensaje vacio
+    if not mensaje:
+        return {'display': 'none'}, '', {'display': 'block'}, no_update, no_update, no_update
+    
+    # Todo esta correto
+    mensaje_respuesta = f'Your message has been sent. I will respond to you as soon as possible at {email}. Thank you for contacting me.'
+    return no_update, no_update, no_update, no_update, {'display': 'none'}, mensaje_respuesta
+
 
 if __name__ == '__main__':
     app.run(port=8050, debug=True)
