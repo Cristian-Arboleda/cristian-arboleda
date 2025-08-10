@@ -1,6 +1,9 @@
 from dash import Dash, html, callback, dcc, Input, Output, ctx, no_update, State
 from dash.exceptions import PreventUpdate
 import re
+import os
+import psycopg2
+from dotenv import load_dotenv
 
 fondo_grande = "assets/fondo_grande.mp4"
 fondo_pequeno = "assets/fondo_pequeno.mp4"
@@ -187,19 +190,16 @@ def menu_seleccion(*args):
     
     # Al iniciar la pagina
     boton_seleccionado = ctx.triggered_id
-    print(boton_seleccionado)
     if not boton_seleccionado:
         resultado_clases_menu = [boton_seleccionado_clase if tab == list(contenido_tabs)[0] else boton_no_seleccionado_clase for tab in contenido_tabs]
         resultado_estilos_contenedores_tab = [{'display': 'flex'} if tab == list(contenido_tabs)[0] else {'display': 'none'} for tab in contenido_tabs]
         resultado = resultado_clases_menu + resultado_estilos_contenedores_tab
-        print(resultado)
         return resultado
     
     boton_seleccionado = boton_seleccionado.replace('btn_', '')
     resultado_clases_menu = [boton_seleccionado_clase if boton_seleccionado == tab else boton_no_seleccionado_clase for tab in contenido_tabs]
     resultado_estilos_contenedores_tab = [{"display": "flex"} if tab == boton_seleccionado else {"display": "none"} for tab in contenido_tabs]
     resultado = resultado_clases_menu + resultado_estilos_contenedores_tab
-    print(resultado)
     return resultado
 
 
@@ -226,7 +226,6 @@ def verificar_mensaje(send, email, mensaje):
     
     # Verificar que el correo ingresado es correcto
     email_correcto = verificar_correo(email)
-    print(email_correcto)
     
     # Correo incorrecto
     if not email_correcto:
@@ -236,10 +235,40 @@ def verificar_mensaje(send, email, mensaje):
     if not mensaje:
         return {'display': 'none'}, '', {'display': 'block'}, no_update, no_update, no_update
     
-    # Todo esta correto
-    mensaje_respuesta = f'Your message has been sent. I will respond to you as soon as possible at {email}. Thank you for contacting me.'
+    # enviar email y mensaje a la base de datos
+    with conectar_db() as conn:
+        with conn.cursor() as cur:
+            query = """
+                INSERT INTO cristian_messages (email, message)
+                VALUES (%s, %s)
+            """
+            cur.execute(query, (email, mensaje))
+    
+    mensaje_respuesta = f'Your message has been sent. I will respond to you as soon as possible at "{email}". Thank you for contacting me.'
     return no_update, no_update, no_update, no_update, {'display': 'none'}, mensaje_respuesta
 
+
+def conectar_db():
+    load_dotenv()
+    
+    HOST = os.getenv('PGHOST')
+    DATABASE = os.getenv('PGDATABASE')
+    USER = os.getenv('PGUSER')
+    PASSWORD = os.getenv('PGPASSWORD')
+    PORT = os.getenv('PORT')
+    
+    conn = psycopg2.connect(
+        host=HOST,
+        database=DATABASE,
+        user=USER,
+        password=PASSWORD,
+        port=PORT,
+        sslmode='require',
+    )
+    
+    return conn
+
+conectar_db()
 
 if __name__ == '__main__':
     app.run(port=8050, debug=True)
