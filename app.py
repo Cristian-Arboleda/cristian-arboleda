@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 
 fondo_grande = "assets/fondo_grande.mp4"
 fondo_pequeno = "assets/fondo_pequeno.mp4"
-avatar = "assets/avatar.jpg"
+avatar = "assets/avatar.png"
 
 nombre_usuario = "cristian arboleda"
 
@@ -255,7 +255,7 @@ def conectar_db():
     DATABASE = os.getenv('PGDATABASE')
     USER = os.getenv('PGUSER')
     PASSWORD = os.getenv('PGPASSWORD')
-    PORT = os.getenv('PORT')
+    PORT = 5432
     
     conn = psycopg2.connect(
         host=HOST,
