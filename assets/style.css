@@ -179,6 +179,18 @@ hr{
 
 #enviar_mensaje_titulo{
     font-size: 25px;
+    display: inline-block;
+    animation: saltar 3s ease-in-out infinite;
+}
+
+/* Animación: mover hacia arriba y volver */
+@keyframes saltar {
+0%, 100% {
+    transform: translateY(0);
+}
+50% {
+    transform: translateY(-15px);
+}
 }
 
 #email{
