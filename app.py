@@ -61,7 +61,9 @@ videos_destacados_html = html.Div(
     ]
 )
 
-# About me
+# About me ------------------------------------------------------------------------------------------------------
+
+# Datos
 skills = ['python', 'SQL', 'machine_learning', 'dashboards_&_data_visualization','mathematics', 'statistics', 'english', 'rstudio', ]
 datos = {
     "skills": [skill.replace('_', ' ').title() for skill in skills],
