@@ -44,9 +44,9 @@ hr{
 /* -------------------------------------------------------------------------------------------------------------- */
 #contenedor{
     border: 3px solid rgba(0, 0, 0, 0.424);
-    width: 450px;
+    width: 480px;
     margin: 20px;
-    padding: 25px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -155,16 +155,37 @@ hr{
 /* -------------------------------------------------------------------------------------------------------------- */
 #contenedor_about_me{
     background: rgba(0, 0, 0, 0.647);
-    width: 90%;
+    width: 100%;
     border-radius: 5px;
-    padding: 10px;
     display: none;
+    flex-direction: column;
 }
 #about_me{
     color: white;
     text-align: center;
-    font-size: 20px;
+    font-size: 18px;
+    padding: 10px;
 }
+
+#contendor_app{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    max-width: 100%;
+    background: rgba(255, 255, 255, 0.216);
+    justify-content: center;
+    padding-top: 20px;
+}
+#contenedor_app_iconos{
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+.app_icono{
+    height: 30px;
+    width: 30px;
+}
+
 
 /* -------------------------------------------------------------------------------------------------------------- */
 #contenedor_enviar_mensaje{
@@ -179,11 +200,22 @@ hr{
 
 #enviar_mensaje_titulo{
     font-size: 25px;
+    font-family: verdana;
+    white-space: nowrap;
+    overflow: hidden;
     display: inline-block;
-    animation: saltar 3s ease-in-out infinite;
+    border-right: 2px solid white; /* Cursor */
+    animation: escribirBorrar 6s steps(16) infinite; /* 20 pasos = 20 caracteres */
 }
 
-/* Animación: mover hacia arriba y volver */
+/* Un solo ciclo que escribe y borra */
+@keyframes escribirBorrar {
+0%   { width: 0ch; }
+40%  { width: 16ch; } /* Escribe */
+60%  { width: 16ch; } /* Pausa */
+100% { width: 0ch; }  /* Borra */
+}
+/* Animación: mover hacia arriba y volver
 @keyframes saltar {
 0%, 100% {
     transform: translateY(0);
@@ -192,6 +224,7 @@ hr{
     transform: translateY(-15px);
 }
 }
+*/
 
 #email{
     width: 100%;

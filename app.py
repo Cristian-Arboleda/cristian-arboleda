@@ -4,6 +4,8 @@ import re
 import os
 import psycopg2
 from dotenv import load_dotenv
+import plotly.express as px
+import plotly.graph_objects as go
 
 fondo_grande = "assets/fondo_grande.mp4"
 fondo_pequeno = "assets/fondo_pequeno.mp4"
@@ -59,17 +61,92 @@ videos_destacados_html = html.Div(
     ]
 )
 
+# About me
+skills = ['python', 'SQL', 'machine_learning', 'dashboards_&_data_visualization','mathematics', 'statistics', 'english', 'rstudio', ]
+datos = {
+    "skills": [skill.replace('_', ' ').title() for skill in skills],
+    "porcent": [95, 70, 70, 80, 50, 50, 40, 30]
+}
+fig =px.bar(
+        datos,
+        y='skills',
+        x='porcent',
+        orientation='h',
+        color='skills',
+        text='skills'
+    )
+fig.update_traces(
+    textposition='inside', # posicion del texto de las categorias de la barras
+    textfont=dict(color='black',), # estilos de las categorias
+    texttemplate='%{x}'
+)
+fig.update_layout(
+    plot_bgcolor='rgba(0,0,0,0)',
+    paper_bgcolor='rgba(0,0,0,0)',
+    bargap=0.30,
+    height=280,
+    width=400,
+    font=dict(
+        family='verdana',
+        color='white',
+    ),
+    showlegend=False,
+    margin = dict(l=0, r=0, t=0, b=0,)
+)
+fig.update_xaxes(
+    showgrid=False,
+    zeroline=False,
+    title=None # Controla el titulo del eje x
+    )
+fig.update_yaxes(
+    showgrid=False,
+    zeroline=False,
+    title=None, 
+    showticklabels=False
+)
+
+grafico = dcc.Graph(
+    figure=fig,
+)
+app = html.Div(
+    id='contendor_app',
+    children=[
+        html.Div(
+            id='contenedor_app_iconos',
+            children=[
+                html.Img(
+                    src=f'assets/iconos/{skill}.png',
+                    className='app_icono'
+                )
+                for skill in skills
+            ]
+        ),
+        grafico
+    ]
+)
+
+code = dcc.Textarea(value=str(grafico))
+
+about_me_message = """
+Hello, thank you for being here. My name is Cristian. I'm a self-taught enthusiast and enjoy delving deeply into my passions.
+I have an academic background in statistics, programming, and artificial intelligence (Universidad del Valle), and I complement that foundation with additional courses that keep my skills up-to-date. 
+I consider myself responsible, punctual, and highly committed to the projects I work on. I'm results-oriented, detail-oriented, and eager to learn and apply new tools. I seek opportunities to contribute rigorous analysis, data-driven solutions, and well-structured code to challenging projects.
+"""
+
 about_me = html.Div(
     id='contenedor_about_me',
     children=[
-        html.P(children=
-            """
-            Hello, thank you for being here. My name is Cristian. I'm a self-taught enthusiast and enjoy delving deeply into my passions.
-            I have an academic background in statistics, programming, and artificial intelligence (Universidad del Valle), and I complement that foundation with additional courses that keep my skills up-to-date. 
-            I consider myself responsible, punctual, and highly committed to the projects I work on. I'm results-oriented, detail-oriented, and eager to learn and apply new tools. I seek opportunities to contribute rigorous analysis, data-driven solutions, and well-structured code to challenging projects.
-            """,
+        html.P(children=about_me_message,
             id='about_me',
         ),
+        dcc.Tabs(
+            id='',
+            value='app',
+            children=[
+                dcc.Tab(value='app', label='App', children=app),
+                dcc.Tab(value='code', label='Code', children=code),
+            ]
+        )
     ]
 )
 
@@ -229,11 +306,11 @@ def verificar_mensaje(send, email, mensaje):
     
     # Correo incorrecto
     if not email_correcto:
-        return {'display': 'block'}, 'wrong_email', no_update, no_update, no_update, no_update
+        return {'display': 'flex'}, 'wrong_email', no_update, no_update, no_update, no_update
     
     # Mensaje vacio
     if not mensaje:
-        return {'display': 'none'}, '', {'display': 'block'}, no_update, no_update, no_update
+        return {'display': 'none'}, '', {'display': 'flex'}, no_update, no_update, no_update
     
     # enviar email y mensaje a la base de datos
     with conectar_db() as conn:
