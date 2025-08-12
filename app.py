@@ -69,7 +69,7 @@ datos = {
     "skills": [skill.replace('_', ' ').title() for skill in skills],
     "porcent": [95, 70, 70, 80, 50, 50, 40, 30]
 }
-
+colors = ['yellow', 'pink', 'green', 'violet', 'tomato', 'orange', 'royalblue', 'purple']
 # iniciar grafico
 fig = go.Figure()
 
@@ -79,7 +79,15 @@ fig.add_trace(go.Bar(
     orientation='h',
     textposition='inside',
     showlegend=False,
-    #hoverinfo='skip',
+    marker=dict(
+        color=colors, # colores de las barras
+        line=dict(color='black') # color de la linea de la barra
+    ),
+    text=datos['skills'],
+    insidetextanchor='start', # Orden donde inicia el texto dentro de las barras
+    textfont=dict(color='black', size=13),
+    hoverlabel=dict(bgcolor='black'), # Fondo de la etiqueta
+    hovertemplate="(%{x}, %{y})<extra></extra>", # Desactiva las etiquetas adicionales
 ))
 
 # Trazado de texto para los valores fueta del texto a la derecha
@@ -92,27 +100,44 @@ fig.add_trace(go.Scatter(
     showlegend=False,
     hoverinfo='skip',
     marker=dict(color='white',),  
-    textfont=dict(color='black'),
+    textfont=dict(color='white', size=13), # estilos del texto exterior
 ))
 
 #
 fig.update_layout(
-    #plot_bgcolor='rgba(0,0,0,0)', # quitar fondo intero
-    #paper_bgcolor='rgba(0,0,0,0)', # quitar fondo externo
+    plot_bgcolor='rgba(0,0,0,0)', # quitar fondo intero
+    paper_bgcolor='rgba(0,0,0,0)', # quitar fondo externo
     margin=dict(l=0, r=0, t=0, b=0), # disminuir area alrededor del grafico
+    width=400,
+    height=300,
+    yaxis=dict(autorange='reversed'), # Invierte el orden de las categorias del eje y
+    dragmode=False, # desactiva el zoom con el cursor
+    hovermode='closest' #desactivas la etiquetas adicionales
 )
 
 # Ejes
 fig.update_xaxes(
-    showgrid=False,
+    showticklabels=False, # Dasactiva los valores del eje x
+    showgrid=False, # Desactiva la cuadricula del eje x
+    zeroline=False, # Desactiva la linea base del eje x
 )
 fig.update_yaxes(
-    showgrid=False,
+    showticklabels=False, # Desactiva los valor del eje y
 )
-
+all_buttons = [
+    "zoom2d", "pan2d", "select2d", "lasso2d",
+    "zoomIn2d", "zoomOut2d", "autoScale2d", "resetScale2d",
+    "hoverClosestCartesian", "hoverCompareCartesian",
+    "zoom3d", "pan3d", "orbitRotation", "tableRotation",
+    "zoomInGeo", "zoomOutGeo", "resetGeo", "hoverClosestGeo",
+    "hoverClosestGl2d", "hoverClosestPie", "toggleHover",
+    "resetViews", "toggleSpikelines", "resetViewMapbox"
+]
 grafico = dcc.Graph(
     figure=fig,
+    config={"displayModeBar": True, "modeBarButtonsToRemove": all_buttons, 'displaylogo': False,},
 )
+
 app = html.Div(
     id='contendor_app',
     children=[
