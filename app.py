@@ -69,42 +69,45 @@ datos = {
     "skills": [skill.replace('_', ' ').title() for skill in skills],
     "porcent": [95, 70, 70, 80, 50, 50, 40, 30]
 }
-fig =px.bar(
-        datos,
-        y='skills',
-        x='porcent',
-        orientation='h',
-        color='skills',
-        text='skills'
-    )
-fig.update_traces(
-    textposition='inside', # posicion del texto de las categorias de la barras
-    textfont=dict(color='black',), # estilos de las categorias
-    texttemplate='%{x}'
-)
-fig.update_layout(
-    plot_bgcolor='rgba(0,0,0,0)',
-    paper_bgcolor='rgba(0,0,0,0)',
-    bargap=0.30,
-    height=280,
-    width=400,
-    font=dict(
-        family='verdana',
-        color='white',
-    ),
+
+# iniciar grafico
+fig = go.Figure()
+
+fig.add_trace(go.Bar(
+    x=datos['porcent'],
+    y=datos['skills'],
+    orientation='h',
+    textposition='inside',
     showlegend=False,
-    margin = dict(l=0, r=0, t=0, b=0,)
+    #hoverinfo='skip',
+))
+
+# Trazado de texto para los valores fueta del texto a la derecha
+fig.add_trace(go.Scatter(
+    x=datos['porcent'],
+    y=datos['skills'],
+    mode='text',
+    text=[f'{value}%' for value in datos['porcent']],
+    textposition='middle right',
+    showlegend=False,
+    hoverinfo='skip',
+    marker=dict(color='white',),  
+    textfont=dict(color='black'),
+))
+
+#
+fig.update_layout(
+    #plot_bgcolor='rgba(0,0,0,0)', # quitar fondo intero
+    #paper_bgcolor='rgba(0,0,0,0)', # quitar fondo externo
+    margin=dict(l=0, r=0, t=0, b=0), # disminuir area alrededor del grafico
 )
+
+# Ejes
 fig.update_xaxes(
     showgrid=False,
-    zeroline=False,
-    title=None # Controla el titulo del eje x
-    )
+)
 fig.update_yaxes(
     showgrid=False,
-    zeroline=False,
-    title=None, 
-    showticklabels=False
 )
 
 grafico = dcc.Graph(
@@ -271,7 +274,7 @@ def menu_seleccion(*args):
     boton_seleccionado = ctx.triggered_id
     if not boton_seleccionado:
         resultado_clases_menu = [boton_seleccionado_clase if tab == list(contenido_tabs)[0] else boton_no_seleccionado_clase for tab in contenido_tabs]
-        resultado_estilos_contenedores_tab = [{'display': 'flex'} if tab == list(contenido_tabs)[0] else {'display': 'none'} for tab in contenido_tabs]
+        resultado_estilos_contenedores_tab = [{'display': 'flex'} if tab == list(contenido_tabs)[2] else {'display': 'none'} for tab in contenido_tabs]
         resultado = resultado_clases_menu + resultado_estilos_contenedores_tab
         return resultado
     
