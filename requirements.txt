@@ -4,3 +4,4 @@ gunicorn
 psycopg2
 python-dotenv
 plotly
+numpy
