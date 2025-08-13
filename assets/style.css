@@ -195,13 +195,8 @@ hr{
     display: flex;
 }
 #code{
-    width: 100%;
-    height: 400px;
     background: rgba(3, 3, 33, 0.689);
-    color: white;
-    padding: 10px;
-    padding-left: 25px;
-    resize: vertical;
+    resize: none;
 }
 #copy_code{
     position: absolute;

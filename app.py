@@ -4,8 +4,8 @@ import re
 import os
 import psycopg2
 from dotenv import load_dotenv
-import plotly.express as px
-import plotly.graph_objects as go
+from app_code import *
+import dash_ace
 
 fondo_grande = "assets/fondo_grande.mp4"
 fondo_pequeno = "assets/fondo_pequeno.mp4"
@@ -67,67 +67,8 @@ Hello, thank you for being here. My name is Cristian. I'm a self-taught enthusia
 I have an academic background in statistics, programming, and artificial intelligence (Universidad del Valle), and I complement that foundation with additional courses that keep my skills up-to-date. 
 I consider myself responsible, punctual, and highly committed to the projects I work on. I'm results-oriented, detail-oriented, and eager to learn and apply new tools. I seek opportunities to contribute rigorous analysis, data-driven solutions, and well-structured code to challenging projects.
 """
-# Datos
-skills = ['python', 'SQL', 'machine_learning', 'dashboards_&_data_visualization','mathematics', 'statistics', 'english', 'rstudio', ]
-datos = {
-    "skills": [skill.replace('_', ' ').title() for skill in skills],
-    "porcent": [95, 70, 70, 80, 50, 50, 40, 30]
-}
-colors = ['yellow', 'pink', 'green', 'violet', 'tomato', 'orange', 'royalblue', 'purple']
-# iniciar grafico
-fig = go.Figure()
 
-fig.add_trace(go.Bar(
-    x=datos['porcent'],
-    y=datos['skills'],
-    orientation='h',
-    textposition='inside',
-    showlegend=False,
-    marker=dict(
-        color=colors, # colores de las barras
-        line=dict(color='black') # color de la linea de la barra
-    ),
-    text=datos['skills'],
-    insidetextanchor='start', # Orden donde inicia el texto dentro de las barras
-    textfont=dict(color='black', size=13),
-    hoverlabel=dict(bgcolor='black'), # Fondo de la etiqueta
-    hovertemplate="(%{x}, %{y})<extra></extra>", # Desactiva las etiquetas adicionales
-))
-
-# Trazado de texto para los valores fueta del texto a la derecha
-fig.add_trace(go.Scatter(
-    x=datos['porcent'],
-    y=datos['skills'],
-    mode='text',
-    text=[f'{value}%' for value in datos['porcent']],
-    textposition='middle right',
-    showlegend=False,
-    hoverinfo='skip',
-    marker=dict(color='white',),  
-    textfont=dict(color='white', size=13), # estilos del texto exterior
-))
-
-#
-fig.update_layout(
-    plot_bgcolor='rgba(0,0,0,0)', # quitar fondo intero
-    paper_bgcolor='rgba(0,0,0,0)', # quitar fondo externo
-    margin=dict(l=0, r=0, t=0, b=0), # disminuir area alrededor del grafico
-    width=400,
-    height=300,
-    yaxis=dict(autorange='reversed'), # Invierte el orden de las categorias del eje y
-    dragmode=False, # desactiva el zoom con el cursor
-    hovermode='closest' #desactivas la etiquetas adicionales
-)
-
-# Ejes
-fig.update_xaxes(
-    showticklabels=False, # Dasactiva los valores del eje x
-    showgrid=False, # Desactiva la cuadricula del eje x
-    zeroline=False, # Desactiva la linea base del eje x
-)
-fig.update_yaxes(
-    showticklabels=False, # Desactiva los valor del eje y
-)
+# ------------------------------------------------
 all_buttons = [
     "zoom2d", "pan2d", "select2d", "lasso2d",
     "zoomIn2d", "zoomOut2d", "autoScale2d", "resetScale2d",
@@ -159,13 +100,25 @@ app = html.Div(
     ]
 )
 
+#--------------------------------------------------------------------------------------
+with open('app_code.py', 'r') as code_app:
+    code_text = code_app.read()
+    code_text += 'fig.show()'
+
 code = html.Div(
     id='contenedor_code',
     children=[
-        dcc.Textarea(
+        dash_ace.DashAceEditor(
             id='code',
-            value=str(fig),
+            value=code_text,
+            mode='python',
+            theme='monokai',
+            showGutter=False,
+            highlightActiveLine=True,
             readOnly=True,
+            style={'height': '400px', 'width': '100%',},
+            fontSize=12,
+            showPrintMargin=False,
         ),
         dcc.Clipboard(
             target_id='code',
@@ -173,8 +126,6 @@ code = html.Div(
         )
     ]
 )
-
-
 
 about_me = html.Div(
     id='contenedor_about_me',
