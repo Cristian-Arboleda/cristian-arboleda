@@ -49,7 +49,7 @@ fig.update_layout(
     height=300,
     yaxis=dict(autorange='reversed'), # Invierte el orden de las categorias del eje y
     dragmode=False, # desactiva el zoom con el cursor
-    hovermode='closest' #desactivas la etiquetas adicionales
+    hovermode='closest', #desactivas la etiquetas adicionales
 )
 
 # Ejes

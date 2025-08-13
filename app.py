@@ -108,25 +108,26 @@ with open('app_code.py', 'r') as code_app:
 code = html.Div(
     id='contenedor_code',
     children=[
+        dcc.Clipboard(
+            target_id='code',
+            id='copy_code',
+        ),
         dash_ace.DashAceEditor(
             id='code',
             value=code_text,
             mode='python',
             theme='monokai',
             showGutter=False,
-            highlightActiveLine=True,
-            readOnly=True,
-            style={'height': '400px', 'width': '100%',},
+            style={'height': '450px', 'width': '100%',},
             fontSize=12,
             showPrintMargin=False,
         ),
-        dcc.Clipboard(
-            target_id='code',
-            id='copy_code',
-        )
+        
     ]
 )
 
+tab_selected_app_code = {'background': "rgba(3, 3, 33, 0.689)", 'color': "#FFFFFF", 'border':'none', 'border-top': '2px solid #FFEA00'}
+tab_app_code = {'background': "#070415", "color": "#FFFFFF", 'border': '1px solid transparent'}
 about_me = html.Div(
     id='contenedor_about_me',
     children=[
@@ -134,12 +135,12 @@ about_me = html.Div(
             id='about_me',
         ),
         dcc.Tabs(
-            id='',
+            id='contenedor_tab_app_code',
             value='code',
             children=[
-                dcc.Tab(value='app', label='App', children=app),
-                dcc.Tab(value='code', label='Code', children=code),
-            ]
+                dcc.Tab(value='app', label='App', selected_style=tab_selected_app_code, style=tab_app_code, children=app),
+                dcc.Tab(value='code', label='Code', selected_style=tab_selected_app_code, style=tab_app_code, children=code),
+            ],
         )
     ]
 )

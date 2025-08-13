@@ -1,0 +1,9 @@
+CREATE TABLE cristian_messages (
+  id SERIAL PRIMARY KEY,
+  date timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  response_sent VARCHAR(2) CHECK (response_sent IN ('si', 'no')) DEFAULT 'no',
+  email TEXT NOT NULL,
+  message TEXT NOT NULL
+);
+SET TIME ZONE 'America/Bogota';
+SELECT now() AS ahora_bogota_con_offset;

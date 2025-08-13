@@ -169,12 +169,17 @@ hr{
 }
 
 
+.tab_app_code{
+    background: black;
+    padding: 2000px
+}
+
 #contendor_app{
     display: flex;
     flex-direction: row;
     width: 100%;
     max-width: 100%;
-    background: rgba(3, 3, 33, 0.555);
+    background: rgba(3, 3, 33, 0.689);
     justify-content: center;
     padding-top: 20px;
     padding-bottom: 20px;
@@ -191,21 +196,44 @@ hr{
     padding-right: 5px;
 }
 
+/*----------------------------------------------------------*/
 #contenedor_code{
     display: flex;
-}
-#code{
+    flex-direction: row;
     background: rgba(3, 3, 33, 0.689);
-    resize: none;
+    padding: 10px 0px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 #copy_code{
-    position: absolute;
-    top: 1;
-    right: 1;
+    position:relative;
     color: white;
     cursor: pointer;
     z-index: 10;
-    padding: 5px;
+    height: 20px;
+}
+#code{
+    background: transparent;
+    resize: none;
+}
+/* Scrollbars dentro de Ace Editor */
+.ace_scrollbar {
+  scrollbar-width: thin;               /* Firefox */
+  scrollbar-color: rgba(255,255,255,0.2) transparent;
+}
+.ace_scrollbar::-webkit-scrollbar {
+  width: 6px;                           /* grosor vertical */
+  height: 6px;                          /* grosor horizontal */
+}
+.ace_scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(255,255,255,0.2);
+  border-radius: 4px;
+}
+.ace_scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255,255,255,0.4);
+}
+.ace_scrollbar::-webkit-scrollbar-track {
+  background: transparent;
 }
 /* -------------------------------------------------------------------------------------------------------------- */
 #contenedor_enviar_mensaje{
