@@ -119,8 +119,9 @@ code = html.Div(
             theme='monokai',
             showGutter=False,
             style={'height': '450px', 'width': '100%',},
-            fontSize=12,
+            fontSize=13,
             showPrintMargin=False,
+            readOnly=True,
         ),
         
     ]
