@@ -109,8 +109,8 @@ code = html.Div(
     id='contenedor_code',
     children=[
         dcc.Clipboard(
-            target_id='code',
             id='copy_code',
+            title="copy code"
         ),
         dash_ace.DashAceEditor(
             id='code',
@@ -125,6 +125,13 @@ code = html.Div(
         
     ]
 )
+# Sincronizar el portapapeles del codigo con el editor del codigo
+@callback(
+    Output('copy_code', 'content'),
+    Input('code', 'value'),
+)
+def sync_clipboard_code(code_value):
+    return code_value
 
 tab_selected_app_code = {'background': "rgba(3, 3, 33, 0.689)", 'color': "#FFFFFF", 'border':'none', 'border-top': '2px solid #FFEA00'}
 tab_app_code = {'background': "#070415", "color": "#FFFFFF", 'border': '1px solid transparent'}
@@ -136,7 +143,7 @@ about_me = html.Div(
         ),
         dcc.Tabs(
             id='contenedor_tab_app_code',
-            value='code',
+            value='app',
             children=[
                 dcc.Tab(value='app', label='App', selected_style=tab_selected_app_code, style=tab_app_code, children=app),
                 dcc.Tab(value='code', label='Code', selected_style=tab_selected_app_code, style=tab_app_code, children=code),
