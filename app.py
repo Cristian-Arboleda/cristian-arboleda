@@ -15,12 +15,14 @@ nombre_usuario = "cristian arboleda"
 
 links=[
     {"tipo": "texto", "texto": "github", "url": "https://github.com/Cristian-Arboleda", "imagen": "assets/iconos/github.png"},
-    {"tipo": "texto", "texto": "web_page", "url": "", "imagen": "assets/iconos/pagina_web.png"},
+    {"tipo": "texto", "texto": "web_page", "url": "", "imagen": "assets/iconos/web_page.png"},
+    {"tipo": "texto", "texto": "whatsapp", "url": "https://wa.me/573186924600", "imagen": "assets/iconos/whatsapp.png"},
+    {"tipo": "texto", "texto": "gmail", "url": "mailto:cristianarboledagarzon@gmail.com", "imagen": "assets/iconos/gmail.png"},
     {"tipo": "texto", "texto": "linkedin", "url": "", "imagen": "assets/iconos/linkedin.png"},
-    {"tipo": "texto", "texto": "youtube", "url": "", "imagen": "assets/iconos/youtube.png"},
-    {"tipo": "texto", "texto": "facebook", "url": "", "imagen": "assets/iconos/facebook.png"},
-    {"tipo": "texto", "texto": "tiktok", "url": "", "imagen": "assets/iconos/tiktok.png"},
-    {"tipo": "texto", "texto": "instagram", "url": "", "imagen": "assets/iconos/instagram.png"},
+    {"tipo": "texto", "texto": "youtube", "url": "https://www.youtube.com/@criztianarboleda/videos", "imagen": "assets/iconos/youtube.png"},
+    #{"tipo": "texto", "texto": "facebook", "url": "", "imagen": "assets/iconos/facebook.png"},
+    #{"tipo": "texto", "texto": "tiktok", "url": "", "imagen": "assets/iconos/tiktok.png"},
+    #{"tipo": "texto", "texto": "instagram", "url": "", "imagen": "assets/iconos/instagram.png"},
 ]
 
 
@@ -97,7 +99,7 @@ grafico = dcc.Graph(
     config={"displayModeBar": True, "modeBarButtonsToRemove": all_buttons, 'displaylogo': False,},
 )
 
-app = html.Div(
+my_skills = html.Div(
     id='contendor_app',
     children=[
         html.Div(
@@ -158,7 +160,7 @@ about_me = html.Div(
             id='contenedor_tab_app_code',
             value='app',
             children=[
-                dcc.Tab(value='app', label='App', selected_style=tab_selected_app_code, style=tab_app_code, children=app),
+                dcc.Tab(value='app', label='App', selected_style=tab_selected_app_code, style=tab_app_code, children=my_skills),
                 dcc.Tab(value='code', label='Code', selected_style=tab_selected_app_code, style=tab_app_code, children=code),
             ],
         )

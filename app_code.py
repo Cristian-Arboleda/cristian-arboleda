@@ -1,10 +1,10 @@
 import plotly.graph_objects as go
 
 # Datos
-skills = ['python', 'SQL', 'machine_learning', 'dashboards_&_data_visualization','mathematics', 'statistics', 'english', 'rstudio', ]
+skills = ['python', 'SQL', 'machine_learning', 'dashboards_&_data_visualization','mathematics', 'statistics', 'english', 'linux']
 datos = {
     "skills": [skill.replace('_', ' ').title() for skill in skills],
-    "porcent": [95, 70, 70, 80, 50, 50, 40, 30]
+    "porcent": [95, 70, 70, 80, 50, 50, 40, 60]
 }
 colors = ['yellow', 'pink', 'green', 'violet', 'tomato', 'orange', 'royalblue', 'purple']
 # iniciar grafico
