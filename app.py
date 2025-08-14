@@ -62,11 +62,25 @@ videos_destacados_html = html.Div(
 )
 
 # About me ------------------------------------------------------------------------------------------------------
-about_me_message = """
-Hello, thank you for being here. My name is Cristian. I'm a self-taught enthusiast and enjoy delving deeply into my passions.
+presentation = 'Hello, thank you for being here. My name is Cristian.'
+text = """
+I'm a self-taught enthusiast and enjoy delving deeply into my passions.
 I have an academic background in statistics, programming, and artificial intelligence (Universidad del Valle), and I complement that foundation with additional courses that keep my skills up-to-date. 
 I consider myself responsible, punctual, and highly committed to the projects I work on. I'm results-oriented, detail-oriented, and eager to learn and apply new tools. I seek opportunities to contribute rigorous analysis, data-driven solutions, and well-structured code to challenging projects.
 """
+about_me_text =html.Div(
+    id='contenedor_about_me_text',
+    children=[
+        html.P(
+            children=presentation,
+            className='about_me_presentation',
+        ),
+        html.P(
+            className='about_me_text',
+            children=text,
+        ),
+    ]
+)
 
 # ------------------------------------------------
 all_buttons = [
@@ -139,9 +153,7 @@ tab_app_code = {'background': "#070415", "color": "#FFFFFF", 'border': '1px soli
 about_me = html.Div(
     id='contenedor_about_me',
     children=[
-        html.P(children=about_me_message,
-            id='about_me',
-        ),
+        about_me_text,
         dcc.Tabs(
             id='contenedor_tab_app_code',
             value='app',

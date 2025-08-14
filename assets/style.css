@@ -154,26 +154,39 @@ hr{
 }
 /* -------------------------------------------------------------------------------------------------------------- */
 #contenedor_about_me{
-    background: transparent;
     width: 100%;
-    border-radius: 5px;
     display: none;
     flex-direction: column;
-    gap: 5px;
+    gap: 15px;
 }
-#about_me{
+
+#contenedor_about_me_text{
+    background: rgba(3, 3, 33, 0.689);
+    padding: 25px;
+    border-radius: 5px;
+    box-shadow: 5px 5px 10px 1px black;
     color: white;
-    text-align: center;
-    font-size: 18px;
-    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    gap: 10px;
 }
-
-
-.tab_app_code{
-    background: black;
-    padding: 2000px
+.about_me_presentation{
+    font-size: 17px;
+    animation: saltar 1.8s ease-in-out infinite; /* duración 1s, bucle infinito */
+    text-align: center
 }
-
+.about_me_text{
+    font-size: 15px;
+}
+@keyframes saltar {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
 #contendor_app{
     display: flex;
     flex-direction: row;
@@ -263,16 +276,6 @@ hr{
 60%  { width: 16ch; } /* Pausa */
 100% { width: 0ch; }  /* Borra */
 }
-/* Animación: mover hacia arriba y volver
-@keyframes saltar {
-0%, 100% {
-    transform: translateY(0);
-}
-50% {
-    transform: translateY(-15px);
-}
-}
-*/
 
 #email{
     width: 100%;
