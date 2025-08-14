@@ -284,7 +284,7 @@ def menu_seleccion(*args):
     boton_seleccionado = ctx.triggered_id
     if not boton_seleccionado:
         resultado_clases_menu = [boton_seleccionado_clase if tab == list(contenido_tabs)[0] else boton_no_seleccionado_clase for tab in contenido_tabs]
-        resultado_estilos_contenedores_tab = [{'display': 'flex'} if tab == list(contenido_tabs)[2] else {'display': 'none'} for tab in contenido_tabs]
+        resultado_estilos_contenedores_tab = [{'display': 'flex'} if tab == list(contenido_tabs)[0] else {'display': 'none'} for tab in contenido_tabs]
         resultado = resultado_clases_menu + resultado_estilos_contenedores_tab
         return resultado
     
