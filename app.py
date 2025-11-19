@@ -241,7 +241,6 @@ app.layout = html.Div(
                                     children=nombre_usuario.title(),
                                     id='nombre_usuario',
                                 ),
-                                html.Hr(),
                             ]
                         ),
                         # contenedor de tabs
