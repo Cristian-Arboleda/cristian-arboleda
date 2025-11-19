@@ -145,8 +145,10 @@ hr{
 #contenedor_featured{
     width: 100%;
     display: none;
+    flex-direction: column;
+    gap: 20px;
 }
-#video_destacado{
+.video_destacado{
     width: 100%;
     height: 250px;
     border: none;

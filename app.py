@@ -14,19 +14,16 @@ avatar = "assets/avatar.png"
 nombre_usuario = "cristian arboleda"
 
 links=[
+    {"tipo": "texto", "texto": "website", "url": "https://cristian-arbol.onrender.com", "imagen": "assets/iconos/web_page.png"},
     {"tipo": "texto", "texto": "github", "url": "https://github.com/Cristian-Arboleda", "imagen": "assets/iconos/github.png"},
-    {"tipo": "texto", "texto": "web_page", "url": "", "imagen": "assets/iconos/web_page.png"},
     {"tipo": "texto", "texto": "whatsapp", "url": "https://wa.me/573186924600", "imagen": "assets/iconos/whatsapp.png"},
     {"tipo": "texto", "texto": "gmail", "url": "mailto:cristianarboledagarzon@gmail.com", "imagen": "assets/iconos/gmail.png"},
-    {"tipo": "texto", "texto": "linkedin", "url": "", "imagen": "assets/iconos/linkedin.png"},
+    {"tipo": "texto", "texto": "linkedin", "url": "https://www.linkedin.com/in/cristian-david-arboleda-garzon/", "imagen": "assets/iconos/linkedin.png"},
     {"tipo": "texto", "texto": "youtube", "url": "https://www.youtube.com/@criztianarboleda/videos", "imagen": "assets/iconos/youtube.png"},
-    #{"tipo": "texto", "texto": "facebook", "url": "", "imagen": "assets/iconos/facebook.png"},
-    #{"tipo": "texto", "texto": "tiktok", "url": "", "imagen": "assets/iconos/tiktok.png"},
-    #{"tipo": "texto", "texto": "instagram", "url": "", "imagen": "assets/iconos/instagram.png"},
 ]
 
 
-# links ----------------------------------------------------
+# links ---------------------------------------------------------------------------------------------------------------------------
 links_html = html.Div(
     id="contenedor_links",
     children=[
@@ -58,7 +55,11 @@ videos_destacados_html = html.Div(
     children=[
         html.Iframe(
             src='https://www.youtube.com/embed/--pxv_RCjOg?si=OsuLfLq73Ide8dAh',
-            id='video_destacado',
+            className='video_destacado',
+        ),
+        html.Iframe(
+            src='https://www.youtube.com/embed/KXvkRC579FU?si=V70hIa9_DYQWLzQc',
+            className='video_destacado',
         ),
     ]
 )
@@ -363,4 +364,4 @@ def conectar_db():
     return conn
 
 if __name__ == '__main__':
-    app.run(port=8050, debug=True)
+    app.run(port=8055, debug=True)
